@@ -53,13 +53,15 @@ type Source = {
 function unpack(p,a,c,k,e,d): string {while(c--)if(k[c])p=p.replace(new RegExp('\\b'+c.toString(a)+'\\b','g'),k[c]);return p}
 
 
+const blacklist = ["anime", "doodstream", "mp4upload"]
+
 export const episodeStream = async (slug: string, episode: number = 1, server: number = 1) : Promise<AnimeStreamResponse | undefined> => {
     const request = await fetch(`https://anitaku.pe/${slug}-episode-${episode}`)
     if(!request.ok) return
     const html = await request.text()
     const parsed = parse(html)
     const serversTable = parsed.querySelector(".anime_muti_link")?.querySelector("ul")
-    const servers = serversTable?.querySelectorAll(`li`).filter(e => !["anime", "doodstream"].includes(e.getAttribute("class")))
+    const servers = serversTable?.querySelectorAll(`li`).filter(e => !blacklist.includes(e.getAttribute("class")))
 
     const serverElement = servers[server] ?? servers[0]
     
@@ -190,7 +192,7 @@ export const episodeServers = async (slug: string, episode: number = 1): Promise
     const animeInfo = parsed.querySelector(".anime-info")
     const title = animeInfo?.querySelector("a")?.getAttribute("title")
 
-    const mappedAnimeServers: AnimeServer[] = serversElements?.filter(el => !["doodstream", "anime"].includes(el.getAttribute("class"))).map(el => {
+    const mappedAnimeServers: AnimeServer[] = serversElements?.filter(el => !blacklist.includes(el.getAttribute("class"))).map(el => {
         const serverURL = el.querySelector("a")
         const id = el.getAttribute("class")
         const serverName = serverURL?.innerText.trim().replace("Choose this server", "")
