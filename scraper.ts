@@ -55,6 +55,7 @@ function unpack(p,a,c,k,e,d): string {while(c--)if(k[c])p=p.replace(new RegExp('
 
 export const episodeStream = async (slug: string, episode: number = 1, server: number = 1) : Promise<AnimeStreamResponse | undefined> => {
     const request = await fetch(`https://anitaku.pe/${slug}-episode-${episode}`)
+    if(!request.ok) return
     const html = await request.text()
     const parsed = parse(html)
     const serversTable = parsed.querySelector(".anime_muti_link")?.querySelector("ul")

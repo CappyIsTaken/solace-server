@@ -6,6 +6,11 @@ const app = express()
 app.use(cors())
 
 
+
+app.get("/", (req,res) => {
+    res.send("How did you get here!")
+})
+
 app.get("/search", async (req,res) => {
     const {q} = req.query
     if(!q) return res.status(400).send("No query was entered!")
@@ -31,7 +36,7 @@ app.get("/episodeStream", async(req,res) => {
     const {episode, slug, server} = req.query
     if(!episode || !slug || !server) return res.status(400).send("No episode / slug / server were found!")
     const stream = await episodeStream(slug, episode, server)
-    res.send(stream)
+    res.send(stream ?? "Episode not found!")
 })
 
 app.listen(3000, () => {
