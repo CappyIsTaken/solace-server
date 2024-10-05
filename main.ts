@@ -12,9 +12,9 @@ app.get("/", (req,res) => {
 })
 
 app.get("/search", async (req,res) => {
-    const {q} = req.query
+    const {q, p} = req.query
     if(!q) return res.status(400).send("No query was entered!")
-    const searchResults = await search(q as string)
+    const searchResults = await search(q as string, Number(p))
     res.send(searchResults)
 })
 
