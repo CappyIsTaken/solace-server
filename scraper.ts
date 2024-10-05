@@ -288,7 +288,6 @@ export const search = async (keyword: string, page: number = 1) : Promise<Search
             releaseYear: +releasedElement.innerText.split(": ")[1].trim()
         }
     })
-    console.log(mappedAnimeItems)
 
     //Get Pages
     const pages = parsed.querySelector("ul.pagination-list")?.querySelectorAll("li")

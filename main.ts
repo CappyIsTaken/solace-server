@@ -28,14 +28,14 @@ app.get("/details", async (req,res) => {
 app.get("/episode", async (req,res) => {
     const {episode,slug} = req.query
     if(!slug || !episode) return res.status(400).send("No slug or episode were found!")
-    const episodeData = await episodeServers(slug, episode)
+    const episodeData = await episodeServers(slug as string, Number(episode))
     res.send(episodeData)
 })
 
 app.get("/episodeStream", async(req,res) => {
     const {episode, slug, server} = req.query
     if(!episode || !slug || !server) return res.status(400).send("No episode / slug / server were found!")
-    const stream = await episodeStream(slug, episode, server)
+    const stream = await episodeStream(slug as string, Number(episode), Number(server))
     res.send(stream ?? "Episode not found!")
 })
 
